@@ -73,10 +73,13 @@ function getDayName(date) {
  * Date('2024-02-13T00:00:00Z') => Date('2024-02-16T00:00:00Z')
  * Date('2024-02-16T00:00:00Z') => Date('2024-02-23T00:00:00Z')
  */
-function getNextFriday(/* date */) {
-  throw new Error('Not implemented');
+function getNextFriday(date) {
+  // throw new Error('Not implemented');
+  const newDate = new Date(date);
+  const dayWeek = newDate.getDay();
+  return dayWeek;
 }
-
+console.log(getNextFriday(Date('2024-02-03T00:00:00Z')));
 /**
  * Returns the number of days in a specified month and year.
  *
@@ -142,8 +145,24 @@ function isDateInPeriod(/* date, period */) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {
-  throw new Error('Not implemented');
+function formatDate(date) {
+  const newDate = new Date(date);
+  const [month, day, year] = [
+    newDate.getUTCMonth(),
+    newDate.getUTCDate(),
+    newDate.getUTCFullYear(),
+  ];
+  const [hour, minute, second] = [
+    newDate.getUTCHours(),
+    newDate.getUTCMinutes(),
+    newDate.getUTCSeconds(),
+  ];
+  let hours = hour % 12 || 12;
+  hours = hours > 9 ? hours : `${hours}`;
+  const minutes = minute > 9 ? minute : `0${minute}`;
+  const seconds = second > 9 ? second : `0${second}`;
+  const format = hour >= 12 ? 'PM' : 'AM';
+  return `${month + 1}/${day}/${year}, ${hours}:${minutes}:${seconds} ${format}`;
 }
 
 /**
