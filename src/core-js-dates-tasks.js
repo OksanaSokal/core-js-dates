@@ -79,7 +79,7 @@ function getNextFriday(date) {
   const dayWeek = newDate.getDay();
   return dayWeek;
 }
-console.log(getNextFriday(Date('2024-02-03T00:00:00Z')));
+
 /**
  * Returns the number of days in a specified month and year.
  *
