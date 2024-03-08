@@ -33,7 +33,8 @@ function dateToTimestamp(date) {
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
 function getTime(date) {
-  return date.toLocaleTimeString();
+  const newDate = new Date(date).toTimeString();
+  return newDate.slice(0, 8);
 }
 
 /**
@@ -95,8 +96,9 @@ function getNextFriday(date) {
  * 1, 2024 => 31
  * 2, 2024 => 29
  */
-function getCountDaysInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountDaysInMonth(month, year) {
+  const lastDay = new Date(year, month, 0);
+  return lastDay.getDate();
 }
 
 /**
@@ -134,8 +136,11 @@ function getCountDaysOnPeriod(dateStart, dateEnd) {
  * '2024-02-02', { start: '2024-02-02', end: '2024-03-02' } => true
  * '2024-02-10', { start: '2024-02-02', end: '2024-03-02' } => true
  */
-function isDateInPeriod(/* date, period */) {
-  throw new Error('Not implemented');
+function isDateInPeriod(date, period) {
+  const dateStart = new Date(period.start);
+  const dateEnd = new Date(period.end);
+  const newDate = new Date(date);
+  return newDate >= dateStart && newDate <= dateEnd;
 }
 
 /**
@@ -181,8 +186,16 @@ function formatDate(date) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  const lastDay = new Date(year, month, 0).getDate();
+  let count = 0;
+  for (let i = 1; i <= lastDay; i += 1) {
+    const day = new Date(year, month - 1, i);
+    if (day.getDay() === 6 || day.getDay() === 0) {
+      count += 1;
+    }
+  }
+  return count;
 }
 
 /**
@@ -212,10 +225,19 @@ function getWeekNumberByDate(/* date */) {
  * Date(2024, 0, 13) => Date(2024, 8, 13)
  * Date(2023, 1, 1) => Date(2023, 9, 13)
  */
-function getNextFridayThe13th(/* date */) {
-  throw new Error('Not implemented');
+function getNextFridayThe13th(date) {
+  const newDate = new Date(date);
+  const flag = true;
+  if (newDate.getDate() < 13 && newDate.getDay(newDate.setDate(13)) === 5) {
+    return new Date(newDate.setDate(13));
+  }
+  while (flag) {
+    newDate.setMonth(newDate.getMonth() + 1);
+    newDate.setDate(13);
+    if (newDate.getDay() === 5) return newDate;
+  }
+  return newDate;
 }
-
 /**
  * Returns the quarter of the year for a given date.
  *
@@ -227,8 +249,20 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  const newDate = new Date(date);
+  const month = newDate.getMonth();
+  let quarter = 0;
+  if (month >= 0 && month <= 2) {
+    quarter = 1;
+  } else if (month >= 3 && month <= 5) {
+    quarter = 2;
+  } else if (month >= 6 && month <= 8) {
+    quarter = 3;
+  } else {
+    quarter = 4;
+  }
+  return quarter;
 }
 
 /**
